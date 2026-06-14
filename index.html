@@ -16,6 +16,7 @@
   --line:rgba(26,22,19,.16); --line-soft:rgba(26,22,19,.09);
   --cobalt:#2440C0;
   --aaron:#B23A2E; --dan:#2E6B53; --jason:#BE8224; --zeke:#6D3A7E; --alex:#A23E66;
+  --gold:#BD9527; --silver:#9A9DA3; --bronze:#A66A35;
   --display:"Bricolage Grotesque",sans-serif;
   --body:"Newsreader",Georgia,serif;
   --mono:"Spline Sans Mono",ui-monospace,monospace;
@@ -54,7 +55,7 @@ a{color:var(--cobalt); text-decoration:none; border-bottom:1px solid rgba(36,64,
 .press > div:first-child{padding-left:0}
 .press > div:last-child{border-right:0; padding-right:0}
 @media(max-width:560px){
-  .press{display:grid; grid-template-columns:1fr 1fr; gap:20px 0}
+  .press{display:grid; grid-template-columns:1fr 1fr; gap:20px 0; padding-top:clamp(18px,5vw,26px)}
   .press > div{flex:none; padding:0; border-right:0}
   .press > div:nth-child(even){padding-left:clamp(18px,6vw,32px); border-left:1px solid var(--line-soft)}
   .press > div:last-child{padding-right:0}
@@ -212,7 +213,7 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
 .duo{display:grid; grid-template-columns:1fr; gap:clamp(22px,4vw,44px); align-items:start; margin-top:8px}
 @media(min-width:820px){.duo{grid-template-columns:1fr 1fr}}
 .lbh{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em; padding-bottom:10px; border-bottom:2px solid var(--ink); margin:0 0 4px}
-.lbh + .dl{border-top:0; margin-top:0}
+.lbh + .dl, .lbh + .medal{border-top:0; margin-top:0}
 .fr{margin-top:6px}
 .fr .r{display:grid; grid-template-columns:118px 1fr auto; gap:14px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line-soft); font-family:var(--mono); font-size:12.5px}
 .fr .pair{letter-spacing:.02em; color:var(--ink-soft)}
@@ -253,6 +254,32 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
 .streamcap{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); margin-top:14px; min-height:1.4em}
 .streamcap b{color:var(--ink); font-weight:500}
 
+/* ---------- medal table ---------- */
+.medal{margin-top:6px; border-top:1px solid var(--ink)}
+.medal .mrow{display:grid; grid-template-columns:auto 1fr auto; gap:clamp(10px,2vw,18px); align-items:center; padding:14px 0; border-bottom:1px solid var(--line-soft)}
+.medal .mrank{font-family:var(--display); font-weight:800; font-size:clamp(22px,3.4vw,32px); letter-spacing:-.03em; color:var(--ink-faint); width:1.3em; text-align:center}
+.medal .mrow.lead .mrank{color:var(--p)}
+.medal .mname{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em}
+.medal .verdict{font-family:var(--body); font-style:italic; font-size:13.5px; color:var(--ink-soft); margin-top:1px}
+.medal .mpips{display:flex; flex-wrap:wrap; gap:4px; margin-top:8px}
+.pip{width:13px; height:13px; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.pip.g{background:var(--gold)} .pip.s{background:var(--silver)} .pip.b{background:var(--bronze)}
+.pip.none{background:none; box-shadow:none; font-family:var(--mono); font-size:11px; color:var(--ink-faint); width:auto; height:auto}
+.medal .mtot{font-family:var(--mono); font-size:12px; color:var(--ink-soft); text-align:right; white-space:nowrap}
+.medal .mtot b{font-family:var(--display); font-weight:700; font-size:15px; color:var(--ink)}
+/* round podium bars */
+.pod{margin-top:6px}
+.pod .prow{padding:12px 0; border-bottom:1px solid var(--line-soft)}
+.pod .ph{display:flex; justify-content:space-between; align-items:baseline; font-family:var(--mono); font-size:12px; margin-bottom:7px}
+.pod .ph .nm{font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:-.01em}
+.pod .ph .ct b{color:var(--ink)} .pod .ph .ct{color:var(--ink-faint)}
+.pbar{display:flex; height:15px; background:var(--line); overflow:hidden}
+.pbar i{height:100%; transition:width .9s cubic-bezier(.2,.7,.2,1); width:0}
+.pbar .s1{background:var(--gold)} .pbar .s2{background:var(--silver)} .pbar .s3{background:var(--bronze)}
+.medkey{display:flex; gap:16px; margin-top:16px; font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); flex-wrap:wrap}
+.medkey i{width:12px; height:12px; border-radius:50%; display:inline-block; vertical-align:-1px; margin-right:6px}
+@media(prefers-reduced-motion:reduce){.pbar i{transition:none}}
+
 ::selection{background:var(--cobalt); color:#fff}
 </style>
 </head>
@@ -270,7 +297,7 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
     <div class="press">
       <div><div class="n">1,001</div><div class="l">Tracks</div></div>
       <div><div class="n">11</div><div class="l">Seasons</div></div>
-      <div><div class="n">5</div><div class="l">Selectors</div></div>
+      <div><div class="n">5</div><div class="l">Players</div></div>
       <div><div class="n">3,990</div><div class="l">Votes cast</div></div>
       <div><div class="n">608</div><div class="l">Artists</div></div>
     </div>
@@ -282,7 +309,7 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
   <!-- ============ SIDE A ============ -->
   <div class="side rv">
     <div class="meter" aria-hidden="true"></div>
-    <h2>Side A — <b>The Selectors</b></h2>
+    <h2>Side A — <b>The Players</b></h2>
     <div class="sub">Five record collections, ranked, dissected, and lightly roasted</div>
   </div>
 
@@ -291,21 +318,40 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
     <div class="h-row">
       <div>
         <div class="eyebrow">The order of things</div>
-        <p class="lede">It isn't close. Scored fairly across seasons with different points budgets, one selector runs a dynasty — and one can't get out of the cellar.</p>
+        <p class="lede">It isn't close. Scored fairly across seasons with different points budgets, one player runs a dynasty — and one can't get out of the cellar.</p>
         <p class="note">The bar shows how often each player <em>tops a round</em> on total points hauled. The figure is their average song, expressed as a within-round z-score, so a high-scoring season can't flatter them.</p>
       </div>
       <div class="stand" id="standings"></div>
     </div>
   </section>
 
+  <!-- MEDAL TABLE -->
+  <section>
+    <div class="eyebrow">The medal table · podium finishes</div>
+    <p class="lede">Aaron has never finished a season off the podium. Alex has never finished one on it.</p>
+    <p class="note" style="max-width:64ch">The league hands out a 1st / 2nd / 3rd each season (by cumulative points) and each round (by points hauled). Left: where everyone landed across the eleven seasons, ranked medal-table style by golds. Right: the same three places counted across all 73 rounds.</p>
+    <div class="duo">
+      <div>
+        <h3 class="lbh">Season finishes · 11 seasons</h3>
+        <div class="medal" id="medaltable"></div>
+      </div>
+      <div>
+        <h3 class="lbh">Round podiums · 73 rounds</h3>
+        <div class="pod" id="roundpodium"></div>
+        <div class="medkey"><span><i style="background:var(--gold)"></i>1st</span><span><i style="background:var(--silver)"></i>2nd</span><span><i style="background:var(--bronze)"></i>3rd</span></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px; max-width:64ch">Two quiet legends hide in here: <b>Jason</b> reached ten of eleven season podiums yet went home with the bronze nine times — the most decorated third-placer imaginable — and <b>Dan</b> is the eternal runner-up, with a league-high 24 second-place rounds.</p>
+  </section>
+
   <!-- FORM GUIDE -->
   <section>
     <div class="eyebrow">The form guide · eleven seasons</div>
     <p class="lede">Aaron never files a losing season. Alex never files a winning one.</p>
-    <p class="note" style="max-width:62ch">Each line is a selector's average within-round z-score per season, in order. Above the centre line is a winning season; below it, a losing one. Tap a name to isolate it.</p>
+    <p class="note" style="max-width:62ch">Each line is a player's average within-round z-score per season, in order. Above the centre line is a winning season; below it, a losing one. Tap a name to isolate it.</p>
     <div class="frame">
       <div class="cap"><span>Performance over time</span><span>z-score · by season</span></div>
-      <div class="canvas-box"><canvas id="trend" role="img" aria-label="Line chart of each selector's average within-round z-score across eleven seasons. Aaron stays positive throughout; Alex negative throughout; Dan rises; Zeke fades.">Aaron stays positive every season; Alex negative every season; Dan trends up; Zeke fades and sits out the finale.</canvas></div>
+      <div class="canvas-box"><canvas id="trend" role="img" aria-label="Line chart of each player's average within-round z-score across eleven seasons. Aaron stays positive throughout; Alex negative throughout; Dan rises; Zeke fades.">Aaron stays positive every season; Alex negative every season; Dan trends up; Zeke fades and sits out the finale.</canvas></div>
       <div class="legend" id="trend-legend"></div>
     </div>
   </section>
@@ -461,7 +507,7 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
       <div>
         <div class="eyebrow">House specialists</div>
         <p class="lede">When two people submit the same legend, the gap is enormous.</p>
-        <p class="note">Seven artists were submitted by all five players — Zeppelin, Metallica, the Stones, the Beatles and the rest form the shared canon. But mastery is personal: hand the same band to a different selector and the score can quadruple.</p>
+        <p class="note">Seven artists were submitted by all five players — Zeppelin, Metallica, the Stones, the Beatles and the rest form the shared canon. But mastery is personal: hand the same band to a different player and the score can quadruple.</p>
       </div>
       <div class="dl" id="canon"></div>
     </div>
@@ -592,25 +638,25 @@ document.getElementById('standings').innerHTML=standings.map(s=>{
 /* ---------- PROFILES ---------- */
 const profiles=[
  {nm:"Aaron",pos:"No. 1 · 51% of rounds",arch:"The omnivore",col:"Aaron",
-  body:"The only selector to submit in all 22 genres, and the most contrarian voter in the room — he wins without ever voting with the crowd. Also the league's relentless critic: he leaves a comment on 97% of his votes, and writes the most when he's scoring you low.",
+  body:"The only player to submit in all 22 genres, and the most contrarian voter in the room — he wins without ever voting with the crowd. Also the league's relentless critic: he leaves a comment on 97% of his votes, and writes the most when he's scoring you low.",
   sig:"John Coltrane · Nina Simone · Fela Kuti · King Crimson",
-  stats:[["Voting","Most concentrated"],["Comments","97% of votes"],["Eclecticism","22 / 22 genres"],["Pet artist","Hendrix · 4×"],["Deep cuts","49% lone picks"],["Submits","Late"]]},
+  stats:[["Voting","Most concentrated"],["Comments","97% of votes"],["Eclecticism","22 / 22 genres"],["Pet artist","Hendrix · 4×"],["Deep cuts","49% lone picks"],["Submits","Late"],["Season medals","7G · 4S · 0B"]]},
  {nm:"Dan",pos:"No. 2 · 21% of rounds",arch:"The shape-shifter",col:"Dan",
   body:"Parliament one round, Slayer the next — funk and thrash with nothing in between. Quietly improving across the run, and the house Hendrix savant: hand him Jimi and he averages a barely-believable 20.",
   sig:"Parliament · Slayer · Jimi Hendrix (20.0 avg)",
-  stats:[["Trend","Rising"],["Specialty","Hendrix"],["Soft spot","Alex (+0.23)"],["Pet artist","TOOL · 5×"],["Deep cuts","55% lone picks"],["Submits","Late"]]},
+  stats:[["Trend","Rising"],["Specialty","Hendrix"],["Soft spot","Alex (+0.23)"],["Pet artist","TOOL · 5×"],["Deep cuts","55% lone picks"],["Submits","Late"],["Season medals","3G · 4S · 1B"]]},
  {nm:"Jason",pos:"No. 3 · 15% of rounds",arch:"The metalhead",col:"Jason",
   body:"Anthrax, Slash, Monster Magnet — the heaviest collection in the league. But his masterstroke is the Chili Peppers, where he averages a 14 while everyone else flounders. Holder of the two highest-scoring songs ever submitted.",
   sig:"Anthrax · Slash · RHCP (14.0 avg)",
-  stats:[["Top song","Right Now · 22"],["Specialty","RHCP"],["Rivalry","Zeke (29–26)"],["Pet artist","Led Zeppelin · 4×"],["Deep cuts","52% lone picks"],["Submits","Early bird"]]},
+  stats:[["Top song","Right Now · 22"],["Specialty","RHCP"],["Rivalry","Zeke (29–26)"],["Pet artist","Led Zeppelin · 4×"],["Deep cuts","52% lone picks"],["Submits","Early bird"],["Season medals","0G · 1S · 9B"]]},
  {nm:"Zeke",pos:"No. 4 · 13% of rounds",arch:"The aesthete",col:"Zeke",
   body:"A devout Miles Davis loyalist and the league's TOOL master (14.3). The most even-handed voter of the five — and, sadly, the clear faller: a top-two opener who slid through the middle seasons and sat out the finale entirely.",
   sig:"Miles Davis (4×) · TOOL (14.3 avg) · Big Thief",
-  stats:[["Trend","Fading"],["Voting","Most even-handed"],["Specialty","TOOL"],["Pet artist","Metallica · 6×"],["Deep cuts","46% lone picks"],["Submits","Always last"]]},
+  stats:[["Trend","Fading"],["Voting","Most even-handed"],["Specialty","TOOL"],["Pet artist","Metallica · 6×"],["Deep cuts","46% lone picks"],["Submits","Always last"],["Season medals","1G · 2S · 1B"]]},
  {nm:"Alex",pos:"No. 5 · 3% of rounds",arch:"The romantic",col:"Alex",
   body:"Weird Al and punk, season after season, results be damned. Perennial cellar-dweller — but climbing, and never boring: he's the only player in league history to award a song a perfect 10.",
   sig:'"Weird Al" · Misfits · Screeching Weasel · Big D',
-  stats:[["Trend","Climbing"],["Claim to fame","Only perfect 10"],["Frost","Aaron (−0.13)"],["Pet artist","\"Weird Al\" · 5×"],["Deep cuts","61% lone picks"],["Submits","Early bird"]]},
+  stats:[["Trend","Climbing"],["Claim to fame","Only perfect 10"],["Frost","Aaron (−0.13)"],["Pet artist","\"Weird Al\" · 5×"],["Deep cuts","61% lone picks"],["Submits","Early bird"],["Season medals","0 — never"]]},
 ];
 document.getElementById('profiles').innerHTML=profiles.map(p=>`
  <article class="pc" style="--p:${PCOL[p.col]}">
@@ -759,15 +805,53 @@ const rrow=(r,hi)=>`<div class="r"><div class="nm">${r[0]}<span class="sub">${r[
 document.getElementById('lopsided').innerHTML=lop.map(r=>rrow(r,true)).join('');
 document.getElementById('tightest').innerHTML=tig.map(r=>rrow(r,false)).join('');
 
+/* ---------- MEDAL TABLE (season finishes) ---------- */
+const medals=[
+ {nm:"Aaron",g:7,s:4,b:0,pod:11,verdict:"On the podium all 11 seasons"},
+ {nm:"Dan",g:3,s:4,b:1,pod:8,verdict:"The dependable runner-up"},
+ {nm:"Zeke",g:1,s:2,b:1,pod:4,verdict:"Won the inaugural season, then faded"},
+ {nm:"Jason",g:0,s:1,b:9,pod:10,verdict:"The bronze king — 9 thirds, never gold"},
+ {nm:"Alex",g:0,s:0,b:0,pod:0,verdict:"Shut out — zero medals in 11 tries"},
+];
+document.getElementById('medaltable').innerHTML=medals.map((m,i)=>{
+ const pips='<span class="pip g"></span>'.repeat(m.g)+'<span class="pip s"></span>'.repeat(m.s)+'<span class="pip b"></span>'.repeat(m.b)
+   || '<span class="pip none">no medals</span>';
+ return `<div class="mrow ${i===0?'lead':''}" style="--p:${PCOL[m.nm]}">
+   <div class="mrank">${i+1}</div>
+   <div><div class="mname">${m.nm}</div><div class="verdict">${m.verdict}</div><div class="mpips">${pips}</div></div>
+   <div class="mtot"><b>${m.g}</b>·${m.s}·${m.b}<br>${m.pod}/11</div>
+ </div>`;
+}).join('');
+
+/* ---------- ROUND PODIUMS ---------- */
+const rpod=[
+ {nm:"Aaron",p1:37,p2:20,p3:6,app:73},
+ {nm:"Dan",p1:15,p2:24,p3:11,app:73},
+ {nm:"Jason",p1:11,p2:12,p3:21,app:73},
+ {nm:"Zeke",p1:8,p2:12,p3:13,app:63},
+ {nm:"Alex",p1:2,p2:5,p3:22,app:73},
+];
+document.getElementById('roundpodium').innerHTML=rpod.map(r=>{
+ const w=x=>(x/r.app*100).toFixed(1);
+ return `<div class="prow">
+   <div class="ph"><span class="nm">${r.nm}</span><span class="ct"><b>${r.p1}</b> · ${r.p2} · ${r.p3} <span style="opacity:.7">of ${r.app}</span></span></div>
+   <div class="pbar"><i class="s1" data-w="${w(r.p1)}"></i><i class="s2" data-w="${w(r.p2)}"></i><i class="s3" data-w="${w(r.p3)}"></i></div>
+ </div>`;
+}).join('');
+
 /* ---------- SUPERLATIVES ---------- */
 const sup=[
+ {k:"Season champion",v:"7",w:"<b>Aaron</b> · titles in 11 seasons",col:"Aaron"},
+ {k:"Never medaled",v:"0",w:"<b>Alex</b> · podiums in 11 seasons",col:"Alex"},
+ {k:"The bronze king",v:"9",w:"<b>Jason</b> · third-place season finishes",col:"Jason"},
+ {k:"Perennial runner-up",v:"24",w:"<b>Dan</b> · second-place rounds",col:"Dan"},
  {k:"Longest win streak",v:"8",w:"<b>Aaron</b> · consecutive rounds",col:"Aaron"},
  {k:"Longest drought",v:"40",w:"<b>Alex</b> · rounds without a win",col:"Alex"},
+ {k:"Inaugural champ",v:"S1",w:"<b>Zeke</b> · won the very first season",col:"Zeke"},
  {k:"Hendrix savant",v:"20.0",w:"<b>Dan</b> · avg on Jimi Hendrix",col:"Dan"},
  {k:"Best single drop",v:"22",w:"<b>Jason</b> · &ldquo;Right Now&rdquo;",col:"Jason"},
  {k:"The deadline gremlin",v:"Last",w:"<b>Zeke</b> · always submits last",col:"Zeke"},
  {k:"Biggest crate-digger",v:"61%",w:"<b>Alex</b> · picks nobody else makes",col:"Alex"},
- {k:"Highest podium rate",v:"86%",w:"<b>Aaron</b> · top-three finishes",col:"Aaron"},
  {k:"Loudest critic",v:"97%",w:"<b>Aaron</b> · of votes get a comment",col:"Aaron"},
 ];
 document.getElementById('superlatives').innerHTML=sup.map(a=>`
@@ -788,7 +872,7 @@ function spark(vals,color,fill){
 const trends=[
  {k:"Returning artists",big:'0 → 50%',arrow:'↑',ac:'var(--ink)',spark:spark([0,23,29,27,40,28,47,42,61,52,47],'#2440C0',true),cap:"share of each season's picks reusing an artist from a prior season — the well slowly runs dry."},
  {k:"Shared taste",big:'.30 → .24',arrow:'↓',ac:'var(--aaron)',spark:spark([0.30,0.24],'#B23A2E',false),cap:"average agreement between any two voters, first half vs second. They're drifting apart, not together."},
- {k:"Votes with a comment",big:'20 → 61%',arrow:'↑',ac:'var(--dan)',spark:spark([20,32,54,43,50,47,43,41,44,37,61],'#2E6B53',true),cap:"the room got chattier over time — every selector except Alex, who went quiet."},
+ {k:"Votes with a comment",big:'20 → 61%',arrow:'↑',ac:'var(--dan)',spark:spark([20,32,54,43,50,47,43,41,44,37,61],'#2E6B53',true),cap:"the room got chattier over time — every player except Alex, who went quiet."},
 ];
 document.getElementById('trends').innerHTML=trends.map(t=>`
  <div class="tc"><div class="k">${t.k}</div>
