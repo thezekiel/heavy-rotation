@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heavy Rotation — The Music League Annual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --paper:#E9E6DC; --paper-2:#E2DED2; --panel:#F1EEE6;
+  --ink:#1A1613; --ink-soft:#4C463D; --ink-faint:#8C8678;
+  --line:rgba(26,22,19,.16); --line-soft:rgba(26,22,19,.09);
+  --cobalt:#2440C0;
+  --aaron:#B23A2E; --dan:#2E6B53; --jason:#BE8224; --zeke:#6D3A7E; --alex:#A23E66;
+  --display:"Bricolage Grotesque",sans-serif;
+  --body:"Newsreader",Georgia,serif;
+  --mono:"Spline Sans Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:18px; line-height:1.5;
+  font-weight:400; -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(26,22,19,.022) 1px, transparent 1px);
+  background-size:4px 4px;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 clamp(18px,5vw,64px)}
+.mono{font-family:var(--mono)}
+h1,h2,h3,.disp{font-family:var(--display); font-weight:700; letter-spacing:-.015em; line-height:1.02; margin:0}
+p{margin:0 0 1rem}
+a{color:var(--cobalt); text-decoration:none; border-bottom:1px solid rgba(36,64,192,.35)}
+
+/* ---------- eyebrow / kicker ---------- */
+.kick{font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint)}
+
+/* ---------- HERO ---------- */
+.hero{padding:clamp(48px,9vw,120px) 0 clamp(40px,6vw,72px); border-bottom:1.5px solid var(--ink)}
+.hero .kick{display:block; margin-bottom:clamp(18px,4vw,34px)}
+.hero h1{font-size:clamp(58px,17vw,184px); font-weight:800; letter-spacing:-.04em}
+.hero h1 .ln{display:block}
+.hero h1 .b{color:var(--cobalt)}
+.dek{font-size:clamp(19px,2.4vw,26px); line-height:1.3; max-width:30ch; margin:clamp(22px,4vw,34px) 0 0; color:var(--ink-soft); font-weight:400}
+.dek em{font-style:italic}
+.eq{display:flex; align-items:flex-end; gap:4px; height:46px; margin:clamp(28px,5vw,40px) 0 0}
+.eq i{width:7px; background:var(--ink); display:block; height:20%; animation:eq 1.4s ease-in-out infinite}
+@keyframes eq{0%,100%{height:18%}50%{height:100%}}
+.press{display:flex; flex-wrap:wrap; gap:0; margin-top:clamp(34px,6vw,52px); border-top:1px solid var(--line)}
+.press > div{flex:1 1 130px; padding:18px clamp(14px,1.8vw,26px); border-right:1px solid var(--line-soft)}
+.press > div:first-child{padding-left:0}
+.press > div:last-child{border-right:0; padding-right:0}
+.press .n{font-family:var(--display); font-weight:700; font-size:clamp(26px,4vw,40px); line-height:1; letter-spacing:-.02em}
+.press .l{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px}
+
+/* ---------- side divider ---------- */
+.side{padding:clamp(64px,11vw,128px) 0 clamp(10px,3vw,28px)}
+.side .meter{display:flex; gap:3px; align-items:flex-end; height:26px; margin-bottom:22px}
+.side .meter span{width:5px; background:var(--ink); opacity:.85}
+.side h2{font-size:clamp(34px,7vw,76px); font-weight:800; letter-spacing:-.03em}
+.side h2 b{font-weight:800; color:var(--cobalt)}
+.side .sub{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint); margin-top:14px}
+
+/* ---------- generic section ---------- */
+section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
+.lede{font-size:clamp(20px,2.6vw,28px); line-height:1.3; max-width:24ch; font-weight:400}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--cobalt); margin-bottom:14px; display:flex; align-items:center; gap:10px}
+.eyebrow::before{content:""; width:26px; height:1px; background:var(--cobalt)}
+.h-row{display:grid; grid-template-columns:1fr; gap:clamp(20px,4vw,48px); align-items:start}
+@media(min-width:780px){.h-row{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}}
+.note{font-size:16px; line-height:1.46; color:var(--ink-soft)}
+.note + .note{margin-top:.7rem}
+.drop:first-letter{font-family:var(--display); font-weight:800; font-size:3.4em; float:left; line-height:.78; padding:.06em .12em 0 0; color:var(--cobalt)}
+
+/* ---------- STANDINGS countdown ---------- */
+.stand{margin-top:8px}
+.row{display:grid; grid-template-columns:auto 1fr auto; gap:clamp(12px,2.4vw,26px); align-items:center; padding:clamp(16px,3vw,26px) 0; border-top:1px solid var(--line)}
+.row:last-child{border-bottom:1px solid var(--line)}
+.rank{font-family:var(--display); font-weight:800; font-size:clamp(30px,5vw,52px); letter-spacing:-.04em; color:var(--ink-faint); width:1.4em; text-align:center}
+.row.lead .rank{color:var(--p)}
+.who .nm{font-family:var(--display); font-weight:700; font-size:clamp(20px,3.2vw,30px); letter-spacing:-.02em}
+.who .tag{font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-top:3px}
+.bars{margin-top:11px; display:flex; gap:3px; max-width:340px}
+.bars i{height:13px; flex:1; background:var(--line); transition:background .5s ease}
+.bars i.on{background:var(--p)}
+.stat{text-align:right; min-width:90px}
+.stat .v{font-family:var(--display); font-weight:700; font-size:clamp(22px,3.4vw,34px); letter-spacing:-.02em}
+.stat .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-top:4px}
+
+/* ---------- chart frames ---------- */
+.frame{margin-top:clamp(24px,4vw,40px)}
+.frame .cap{font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:14px; border-bottom:1px solid var(--ink)}
+.canvas-box{position:relative; width:100%; height:clamp(300px,46vw,440px); margin-top:18px}
+.legend{display:flex; flex-wrap:wrap; gap:7px 16px; margin-top:18px; font-family:var(--mono); font-size:12.5px}
+.legend button{font:inherit; cursor:pointer; background:none; border:0; padding:4px 0; color:var(--ink); display:flex; align-items:center; gap:7px; letter-spacing:.02em; opacity:1; transition:opacity .2s}
+.legend button.off{opacity:.34; text-decoration:line-through}
+.legend .sw{width:13px; height:13px; border-radius:50%; flex:none}
+
+/* ---------- head to head ---------- */
+.h2h{display:grid; grid-template-columns:1fr; gap:14px; margin-top:8px}
+@media(min-width:680px){.h2h{grid-template-columns:1fr 1fr}}
+.h2h .c{border:1px solid var(--line); padding:22px 24px; background:var(--panel)}
+.h2h .c .t{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint)}
+.h2h .c .m{font-family:var(--display); font-weight:700; font-size:clamp(26px,4vw,40px); letter-spacing:-.02em; margin:10px 0 6px; line-height:1}
+.h2h .c .d{font-size:16px; color:var(--ink-soft); line-height:1.4}
+
+/* ---------- player profiles ---------- */
+.cards{display:grid; grid-template-columns:1fr; gap:18px; margin-top:8px}
+@media(min-width:640px){.cards{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.cards{grid-template-columns:repeat(3,1fr)}}
+.pc{border:1px solid var(--line); background:var(--panel); padding:0; display:flex; flex-direction:column; overflow:hidden}
+.pc .top{padding:20px 22px 18px; border-top:5px solid var(--p)}
+.pc .pos{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ink-faint)}
+.pc .nm{font-family:var(--display); font-weight:700; font-size:26px; letter-spacing:-.02em; margin:6px 0 2px}
+.pc .arch{font-family:var(--body); font-style:italic; font-size:17px; color:var(--p)}
+.pc .body{padding:4px 22px 22px; font-size:15.5px; line-height:1.44; color:var(--ink-soft)}
+.pc dl{margin:0; border-top:1px solid var(--line-soft); padding-top:13px; margin-top:13px}
+.pc .li{display:flex; justify-content:space-between; gap:12px; padding:4px 0; font-family:var(--mono); font-size:12px; letter-spacing:.02em}
+.pc .li span:first-child{color:var(--ink-faint); text-transform:uppercase; letter-spacing:.1em}
+.pc .li span:last-child{text-align:right; color:var(--ink); font-weight:500}
+.pc .sig{font-family:var(--body); font-style:italic; color:var(--ink); margin-top:2px}
+
+/* ---------- heatmap ---------- */
+.heat{margin-top:8px}
+.heatgrid{display:grid; grid-template-columns:84px repeat(5,1fr); gap:5px; font-family:var(--mono); font-size:13px}
+.heatgrid .hc{padding:11px 4px; text-align:center; border-radius:2px}
+.heatgrid .lab{color:var(--ink-faint); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; justify-content:center}
+.heatgrid .rl{justify-content:flex-end; padding-right:10px; font-weight:500; color:var(--ink)}
+.heatgrid .dz{background:var(--paper-2); color:var(--ink-faint)}
+.heatkey{display:flex; align-items:center; gap:14px; margin-top:16px; font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); flex-wrap:wrap}
+.heatkey i{width:15px; height:15px; border-radius:3px; display:inline-block; vertical-align:-2px; margin-right:6px}
+
+/* ---------- taste network ---------- */
+.tn{display:block; max-width:460px; margin:6px auto 0; width:100%; height:auto}
+
+/* ---------- dot-leader tables ---------- */
+.dl{margin-top:8px; border-top:1px solid var(--ink)}
+.dl .r{display:grid; grid-template-columns:auto 1fr auto; align-items:baseline; gap:8px; padding:11px 0; border-bottom:1px solid var(--line-soft)}
+.dl .nm{font-family:var(--body); font-size:17px; white-space:nowrap}
+.dl .nm .sub{font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:.04em; margin-left:9px}
+.dl .led{border-bottom:1.5px dotted var(--line); transform:translateY(-5px); min-width:18px}
+.dl .v{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em}
+.dl .bar{grid-column:1/-1; height:8px; background:var(--line); margin-top:-2px}
+.dl .bar i{display:block; height:100%; background:var(--ink); width:0; transition:width .9s cubic-bezier(.2,.7,.2,1)}
+
+/* ---------- three column lists ---------- */
+.tri{display:grid; grid-template-columns:1fr; gap:clamp(22px,4vw,40px); margin-top:8px}
+@media(min-width:760px){.tri{grid-template-columns:repeat(3,1fr)}}
+.tri h3{font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:-.01em; padding-bottom:10px; border-bottom:2px solid var(--ink); margin-bottom:6px}
+.tri .it{display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--line-soft); align-items:baseline}
+.tri .sc{font-family:var(--display); font-weight:800; font-size:24px; min-width:1.6em; letter-spacing:-.03em}
+.tri .sc.flop{color:var(--ink-faint)}
+.tri .mt .s{font-family:var(--body); font-size:16px; line-height:1.25; display:block}
+.tri .mt .a{font-family:var(--mono); font-size:11px; color:var(--ink-faint); letter-spacing:.04em; text-transform:uppercase}
+
+/* ---------- same song different fate ---------- */
+.fate{margin-top:8px}
+.fate .r{padding:18px 0; border-top:1px solid var(--line)}
+.fate .r:last-child{border-bottom:1px solid var(--line)}
+.fate .hd{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:14px; flex-wrap:wrap}
+.fate .nm{font-family:var(--display); font-weight:700; font-size:clamp(18px,2.6vw,24px); letter-spacing:-.01em}
+.fate .vb{font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint)}
+.fate .track{position:relative; height:34px; margin-left:2px}
+.fate .axis{position:absolute; left:0; right:0; top:50%; height:1px; background:var(--line)}
+.fate .dot{position:absolute; top:50%; transform:translate(-50%,-50%); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:700; font-size:13px; color:#fff}
+.fate .ends{display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); margin-top:6px; letter-spacing:.1em}
+
+/* ---------- trivia ---------- */
+.triv{display:grid; grid-template-columns:1fr; gap:0; margin-top:8px; border-top:1px solid var(--ink)}
+@media(min-width:680px){.triv{grid-template-columns:1fr 1fr}}
+.triv .t{padding:24px 0; border-bottom:1px solid var(--line)}
+@media(min-width:680px){.triv .t:nth-child(odd){border-right:1px solid var(--line); padding-right:36px}.triv .t:nth-child(even){padding-left:36px}}
+.triv .big{font-family:var(--display); font-weight:800; font-size:clamp(30px,5vw,46px); letter-spacing:-.03em; line-height:1; color:var(--cobalt)}
+.triv .big small{font-size:.46em; color:var(--ink-faint); font-weight:500; letter-spacing:0}
+.triv .cap{font-size:16px; color:var(--ink-soft); margin-top:12px; line-height:1.4}
+
+/* ---------- colophon ---------- */
+.colophon{border-top:1.5px solid var(--ink); padding:clamp(40px,7vw,72px) 0 clamp(60px,9vw,90px); margin-top:clamp(40px,7vw,72px)}
+.colophon .grid{display:grid; grid-template-columns:1fr; gap:22px}
+@media(min-width:760px){.colophon .grid{grid-template-columns:repeat(3,1fr)}}
+.colophon h4{font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--cobalt); margin:0 0 8px}
+.colophon p{font-size:14.5px; line-height:1.46; color:var(--ink-soft); margin:0}
+.colophon .sign{font-family:var(--display); font-weight:700; font-size:clamp(40px,9vw,96px); letter-spacing:-.04em; margin-top:clamp(32px,6vw,56px); line-height:.92}
+.colophon .sign b{color:var(--cobalt)}
+
+/* reveal */
+.rv{opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease}
+.rv.in{opacity:1; transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1; transform:none; transition:none}
+  .eq i{animation:none; height:60%}
+  .dl .bar i{transition:none}
+  .bars i{transition:none}
+}
+/* ---------- expansion components ---------- */
+.duo{display:grid; grid-template-columns:1fr; gap:clamp(22px,4vw,44px); align-items:start; margin-top:8px}
+@media(min-width:820px){.duo{grid-template-columns:1fr 1fr}}
+.lbh{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em; padding-bottom:10px; border-bottom:2px solid var(--ink); margin:0 0 4px}
+.lbh + .dl{border-top:0; margin-top:0}
+.fr{margin-top:6px}
+.fr .r{display:grid; grid-template-columns:118px 1fr auto; gap:14px; align-items:center; padding:9px 0; border-bottom:1px solid var(--line-soft); font-family:var(--mono); font-size:12.5px}
+.fr .pair{letter-spacing:.02em; color:var(--ink-soft)}
+.fr .track{height:9px; background:var(--line)}
+.fr .track i{display:block; height:100%; background:var(--cobalt); width:0; transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.fr .v{font-family:var(--display); font-weight:700; font-size:15px}
+.pca{width:100%; height:auto; display:block; margin-top:18px}
+@media(prefers-reduced-motion:reduce){.fr .track i{transition:none}}
+
+::selection{background:var(--cobalt); color:#fff}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <span class="kick">The Music League Annual · Mar 2025 – Apr 2026</span>
+    <h1><span class="ln">Heavy</span><span class="ln b">Rotation</span></h1>
+    <p class="dek">A statistical teardown of 1,001 songs, eleven seasons, and five friends who agree on almost nothing — <em>except that Led Zeppelin is never a bad idea.</em></p>
+    <div class="eq" aria-hidden="true">
+      <i style="animation-delay:0s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.5s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.45s"></i><i style="animation-delay:.25s"></i><i style="animation-delay:.05s"></i>
+    </div>
+    <div class="press">
+      <div><div class="n">1,001</div><div class="l">Tracks</div></div>
+      <div><div class="n">11</div><div class="l">Seasons</div></div>
+      <div><div class="n">5</div><div class="l">Selectors</div></div>
+      <div><div class="n">3,990</div><div class="l">Votes cast</div></div>
+      <div><div class="n">608</div><div class="l">Artists</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ SIDE A ============ -->
+  <div class="side rv">
+    <div class="meter" aria-hidden="true"></div>
+    <h2>Side A — <b>The Selectors</b></h2>
+    <div class="sub">Five record collections, ranked, dissected, and lightly roasted</div>
+  </div>
+
+  <!-- STANDINGS -->
+  <section>
+    <div class="h-row">
+      <div>
+        <div class="eyebrow">The order of things</div>
+        <p class="lede">It isn't close. Scored fairly across seasons with different points budgets, one selector runs a dynasty — and one can't get out of the cellar.</p>
+        <p class="note">The bar shows how often each player <em>tops a round</em> on total points hauled. The figure is their average song, expressed as a within-round z-score, so a high-scoring season can't flatter them.</p>
+      </div>
+      <div class="stand" id="standings"></div>
+    </div>
+  </section>
+
+  <!-- FORM GUIDE -->
+  <section>
+    <div class="eyebrow">The form guide · eleven seasons</div>
+    <p class="lede">Aaron never files a losing season. Alex never files a winning one.</p>
+    <p class="note" style="max-width:62ch">Each line is a selector's average within-round z-score per season, in order. Above the centre line is a winning season; below it, a losing one. Tap a name to isolate it.</p>
+    <div class="frame">
+      <div class="cap"><span>Performance over time</span><span>z-score · by season</span></div>
+      <div class="canvas-box"><canvas id="trend" role="img" aria-label="Line chart of each selector's average within-round z-score across eleven seasons. Aaron stays positive throughout; Alex negative throughout; Dan rises; Zeke fades.">Aaron stays positive every season; Alex negative every season; Dan trends up; Zeke fades and sits out the finale.</canvas></div>
+      <div class="legend" id="trend-legend"></div>
+    </div>
+  </section>
+
+  <!-- HEAD TO HEAD -->
+  <section>
+    <div class="eyebrow">By the throat · head to head</div>
+    <p class="lede">A dynasty looks like this from across the table.</p>
+    <div class="h2h">
+      <div class="c rv"><div class="t">Aaron vs Alex · seasons both played</div><div class="m" style="color:var(--aaron)">62 – 9</div><div class="d">The most lopsided rivalry in the league. Aaron out-hauls Alex in seven of every eight rounds they share.</div></div>
+      <div class="c rv"><div class="t">Jason vs Zeke · the only real contest</div><div class="m">29 – 26</div><div class="d">The one matchup decided by nerve rather than gravity — and the closest thing the league has to a fair fight.</div></div>
+    </div>
+  </section>
+
+  <!-- THE FIVE -->
+  <section>
+    <div class="eyebrow">The five · field notes</div>
+    <p class="lede">Same five names every season. Five completely different record shops.</p>
+    <div class="cards" id="profiles"></div>
+  </section>
+
+  <!-- WHO RATES WHOM -->
+  <section>
+    <div class="h-row">
+      <div>
+        <div class="eyebrow">Who rates whom</div>
+        <p class="lede">Dan is Alex's one true believer.</p>
+        <p class="note">Each cell is how a voter scores a submitter's songs <em>relative to that submitter's own average</em>. Teal means a soft spot; rust means a cold shoulder. The diagonal is blank — nobody votes for themselves.</p>
+        <p class="note">Dan rewards Alex more than anyone rewards anyone (+0.23) — striking, since Alex finishes last and most others mark him down. Aaron and Alex, meanwhile, quietly mark <em>each other</em> down: the league's only mutual frost.</p>
+      </div>
+      <div class="heat">
+        <div class="heatgrid" id="heatgrid"></div>
+        <div class="heatkey"><span><i style="background:#2E6B53"></i>rates above their norm</span><span><i style="background:#B2543A"></i>rates below their norm</span><span>rows vote · columns submit</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOYALTY LEDGER -->
+  <section>
+    <div class="eyebrow">The loyalty ledger</div>
+    <p class="lede">Where the points actually flow.</p>
+    <div class="h-row">
+      <div>
+        <p class="note">The raw tally: total points each voter has handed each submitter across every season. Budgets are roughly equal, so the columns mostly reveal who's <em>worth</em> voting for — Aaron pulls the biggest stream from everyone. Add both directions together and you get a rough friendship index.</p>
+        <div class="fr" id="friendship"></div>
+      </div>
+      <div class="heat">
+        <div class="heatgrid" id="loyaltygrid"></div>
+        <div class="heatkey"><span><i style="background:#2440C0"></i>more points given</span><span>rows vote · columns submit</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASTE BLOCS -->
+  <section>
+    <div class="h-row">
+      <div>
+        <div class="eyebrow">Taste blocs · the correlation</div>
+        <p class="lede">There's a clique. Aaron isn't in it.</p>
+        <p class="note">Correlate the actual points players hand out on songs they both judged, and three of them turn out to share a palate — Jason, Zeke and Dan vote alike. Aaron is the island: his correlation with everyone is the weakest in the room, and he's the most contrarian voter of the five. The most idiosyncratic taste in the league also happens to win the most.</p>
+      </div>
+      <div>
+        <svg class="tn" viewBox="0 0 460 300" role="img" aria-label="Network showing Dan, Jason and Zeke strongly connected by shared taste, with Aaron and Alex as outliers.">
+          <line x1="150" y1="90" x2="300" y2="90" stroke="#2440C0" stroke-width="6" opacity=".85"/>
+          <line x1="150" y1="90" x2="225" y2="210" stroke="#2440C0" stroke-width="5" opacity=".7"/>
+          <line x1="300" y1="90" x2="225" y2="210" stroke="#2440C0" stroke-width="5" opacity=".7"/>
+          <text x="225" y="78" text-anchor="middle" font-family="Spline Sans Mono" font-size="12" fill="#2440C0">.42</text>
+          <text x="168" y="160" text-anchor="middle" font-family="Spline Sans Mono" font-size="12" fill="#2440C0">.38</text>
+          <text x="290" y="160" text-anchor="middle" font-family="Spline Sans Mono" font-size="12" fill="#2440C0">.39</text>
+          <g font-family="Bricolage Grotesque" font-weight="700" font-size="15" fill="#1A1613" text-anchor="middle">
+            <circle cx="150" cy="90" r="34" fill="#6D3A7E" opacity=".16" stroke="#6D3A7E" stroke-width="1.5"/><text x="150" y="95" fill="#6D3A7E">Zeke</text>
+            <circle cx="300" cy="90" r="34" fill="#2E6B53" opacity=".16" stroke="#2E6B53" stroke-width="1.5"/><text x="300" y="95" fill="#2E6B53">Dan</text>
+            <circle cx="225" cy="210" r="34" fill="#BE8224" opacity=".18" stroke="#BE8224" stroke-width="1.5"/><text x="225" y="215" fill="#9a6a1d">Jason</text>
+            <circle cx="55" cy="225" r="30" fill="#B23A2E" opacity=".14" stroke="#B23A2E" stroke-width="1.5" stroke-dasharray="3 3"/><text x="55" y="230" fill="#B23A2E" font-size="14">Aaron</text>
+            <circle cx="405" cy="225" r="30" fill="#A23E66" opacity=".12" stroke="#A23E66" stroke-width="1.5" stroke-dasharray="3 3"/><text x="405" y="230" fill="#A23E66" font-size="14">Alex</text>
+          </g>
+          <text x="55" y="270" text-anchor="middle" font-family="Spline Sans Mono" font-size="10" fill="#8C8678">the island</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASTE SIMILARITY -->
+  <section>
+    <div class="eyebrow">How alike is their taste?</div>
+    <p class="lede">Measured two ways — and both say the same thing.</p>
+    <p class="note" style="max-width:66ch">Left: the correlation between every pair's scores on songs they both judged, where 1.0 would be identical taste. Right: those same voting patterns flattened onto a two-dimensional map. Dan, Jason and Zeke huddle together; Aaron drifts off alone on the far axis.</p>
+    <div class="duo">
+      <div class="heat">
+        <div class="heatgrid" id="corrgrid"></div>
+        <div class="heatkey"><span><i style="background:#2440C0"></i>more alike</span><span>Pearson r of scores</span></div>
+      </div>
+      <div class="frame" style="margin-top:0">
+        <div class="cap"><span>Voter taste map</span><span>PCA · 58% of variance</span></div>
+        <svg class="pca" id="pca" viewBox="0 0 460 360" role="img" aria-label="A taste map placing Aaron far to one side, with Alex, Dan, Jason and Zeke clustered on the other.">Aaron sits alone on one axis; the other four cluster together.</svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SIDE B ============ -->
+  <div class="side rv">
+    <div class="meter" aria-hidden="true"></div>
+    <h2>Side B — <b>The Records</b></h2>
+    <div class="sub">What the room rewards, what it ignores, and what it keeps getting wrong</div>
+  </div>
+
+  <!-- GENRE CHART -->
+  <section>
+    <div class="eyebrow">The genre table · average votes per song</div>
+    <p class="lede">Virtuosity pays. Comedy does not.</p>
+    <p class="note" style="max-width:64ch">League average is 9.1 points a song. A caveat sits on top of the table: one season was themed around instrumental chops, which loaded the jazz, funk and prog ranks with the highest-scoring songs in the archive. Take the top three with a pinch of salt.</p>
+    <div class="dl" id="genres"></div>
+  </section>
+
+  <!-- ARTIST LEADERBOARD -->
+  <section>
+    <div class="eyebrow">The artist leaderboard</div>
+    <p class="lede">Who lands every time — and who starts the arguments.</p>
+    <div class="duo">
+      <div>
+        <h3 class="lbh">Highest scoring · 4+ submissions</h3>
+        <div class="dl" id="topartists"></div>
+      </div>
+      <div>
+        <h3 class="lbh">Most polarizing · widest swing</h3>
+        <div class="dl" id="polarartists"></div>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px; max-width:64ch">Van Halen manages the rare double — top-five on average <em>and</em> the second-most divisive in the league. Miles Davis and TOOL are the safest bets going; Primus is a coin flip every time.</p>
+  </section>
+
+  <!-- ROCK DYNASTIES -->
+  <section>
+    <div class="eyebrow">Rock dynasties</div>
+    <p class="lede">The group keeps proposing to Guns N' Roses. The group keeps voting no.</p>
+    <p class="note" style="max-width:62ch">Each bubble is an extended musical family — every band, side-project and solo record in one orbit. Right means they reach for it often; up means it actually lands. Bubble size tracks volume. Hover for the roster.</p>
+    <div class="frame">
+      <div class="cap"><span>How often submitted vs how well it scores</span><span>bubble = submissions</span></div>
+      <div class="canvas-box"><canvas id="fam" role="img" aria-label="Bubble chart of musical families. TOOL and A Perfect Circle score highest; the Guns N Roses and Slash family is submitted most often but scores well below average, as does the Black Sabbath, Ozzy and Dio family.">TOOL/A Perfect Circle score highest; Seattle grunge is the most-submitted family and holds above average; the GnR/Slash and Sabbath families are submitted often but score below the league line.</canvas></div>
+    </div>
+  </section>
+
+  <!-- WHO PLAYS CANON BEST -->
+  <section>
+    <div class="h-row">
+      <div>
+        <div class="eyebrow">House specialists</div>
+        <p class="lede">When two people submit the same legend, the gap is enormous.</p>
+        <p class="note">Seven artists were submitted by all five players — Zeppelin, Metallica, the Stones, the Beatles and the rest form the shared canon. But mastery is personal: hand the same band to a different selector and the score can quadruple.</p>
+      </div>
+      <div class="dl" id="canon"></div>
+    </div>
+  </section>
+
+  <!-- HALL OF FAME / FLOPS -->
+  <section>
+    <div class="eyebrow">The archive · highs, lows and ambushes</div>
+    <p class="lede">Every league needs a hall of fame and a cutting-room floor.</p>
+    <div class="tri">
+      <div>
+        <h3>Highest scoring</h3>
+        <div class="it"><span class="sc" style="color:var(--jason)">22</span><span class="mt"><span class="s">Right Now</span><span class="a">Van Halen · Jason</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--jason)">21</span><span class="mt"><span class="s">Love Reign O'er Me</span><span class="a">The Who · Jason</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--dan)">20</span><span class="mt"><span class="s">Crosstown Traffic</span><span class="a">Jimi Hendrix · Dan</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--aaron)">20</span><span class="mt"><span class="s">Watermelon Man</span><span class="a">Herbie Hancock · Aaron</span></span></div>
+      </div>
+      <div>
+        <h3>The cutting-room floor</h3>
+        <div class="it"><span class="sc flop">1</span><span class="mt"><span class="s">Stan</span><span class="a">Eminem · Alex</span></span></div>
+        <div class="it"><span class="sc flop">1</span><span class="mt"><span class="s">Black or White</span><span class="a">Michael Jackson · Alex</span></span></div>
+        <div class="it"><span class="sc flop">1</span><span class="mt"><span class="s">Spit</span><span class="a">Kittie · Zeke</span></span></div>
+        <div class="it"><span class="sc flop">2</span><span class="mt"><span class="s">Don't Cry (Original)</span><span class="a">Guns N' Roses · Alex</span></span></div>
+      </div>
+      <div>
+        <h3>Sleeper hits</h3>
+        <div class="it"><span class="sc" style="color:var(--aaron)">17</span><span class="mt"><span class="s">House of the Rising Sun</span><span class="a">The Animals · Aaron</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--zeke)">16</span><span class="mt"><span class="s">Hollaback Girl</span><span class="a">Gwen Stefani · Zeke</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--zeke)">16</span><span class="mt"><span class="s">Doin' Something</span><span class="a">Soulive · Zeke</span></span></div>
+        <div class="it"><span class="sc" style="color:var(--ink-soft)">—</span><span class="mt"><span class="s">Most divisive: Primus, Van Halen, Hendrix</span><span class="a">give it a 10 or a 1</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAME SONG DIFFERENT FATE -->
+  <section>
+    <div class="eyebrow">Same song, different fate</div>
+    <p class="lede">The track barely matters. The room, the season, the messenger — that's the whole game.</p>
+    <p class="note" style="max-width:60ch">Some songs were submitted more than once across seasons. Plotted on a 0–22 scale, the spread is the point: a single song can be a smash one season and a write-off the next.</p>
+    <div class="fate" id="fate"></div>
+  </section>
+
+  <!-- LIGHTNING RODS -->
+  <section>
+    <div class="eyebrow">Lightning rods · songs that split the room</div>
+    <p class="lede">One person's 10 is another person's 1.</p>
+    <p class="note" style="max-width:60ch">The widest disagreements in the archive. Each dot is one voter's score on a 0–10 ballot — the further they scatter, the harder the fight. Alex, the league's most generous bettor, is usually the one out on the high end.</p>
+    <div class="fate" id="polar"></div>
+  </section>
+
+  <!-- ROOM TEMPERATURE -->
+  <section>
+    <div class="eyebrow">Room temperature · by the round</div>
+    <p class="lede">Some rounds are blowouts. Some come down to a single point.</p>
+    <div class="duo">
+      <div><h3 class="lbh">Most lopsided rounds</h3><div class="dl" id="lopsided"></div></div>
+      <div><h3 class="lbh">Tightest races</h3><div class="dl" id="tightest"></div></div>
+    </div>
+    <p class="note" style="margin-top:18px; max-width:64ch">Scored by spread relative to each round's budget, so a high-points season can't fake drama. The blowouts cluster in the low-stakes "Jock Jams" season — when little is on the line, one song runs away with it. The photo-finishes happen when everyone quietly agrees.</p>
+  </section>
+
+  <!-- TRIVIA -->
+  <section>
+    <div class="eyebrow">The locked groove · liner notes</div>
+    <p class="lede">The small print, for the obsessives.</p>
+    <div class="triv">
+      <div class="t"><div class="big">43×<small> the word "remaster"</small></div><div class="cap">The single most common word across all 1,001 titles — a quiet monument to the streaming-era reissue.</div></div>
+      <div class="t"><div class="big">12 – 9<small> love beats hate</small></div><div class="cap">"Love" appears in twelve titles, "hate" in nine. The league is, narrowly, a romantic.</div></div>
+      <div class="t"><div class="big">10.3<small> vs 9.1 overall</small></div><div class="cap">Live recordings out-score studio cuts. A room full of music nerds rewards the performance.</div></div>
+      <div class="t"><div class="big">4.6<small> "Weird Al" Yankovic</small></div><div class="cap">Statistically the worst-performing artist in the league — and Alex keeps submitting him anyway.</div></div>
+      <div class="t"><div class="big">176<small> one-word titles</small></div><div class="cap">From "Supersonic" to "Zombie." Brevity is well represented.</div></div>
+      <div class="t"><div class="big">21 words<small> the longest title</small></div><div class="cap">Rush's "2112: Overture / The Temples Of Syrinx / Discovery / … / Grand Finale - Medley." Of course it's Rush.</div></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- COLOPHON -->
+<footer class="colophon">
+  <div class="wrap">
+    <div class="grid">
+      <div><h4>The data</h4><p>Built from eleven Music League season exports: every submission, vote and comment across 1,001 songs and roughly 3,990 ballots, March 2025 through April 2026.</p></div>
+      <div><h4>The method</h4><p>Performance is measured as a within-round z-score, so seasons with larger points budgets don't inflate a player. Standings rank by share of rounds won on total points hauled.</p></div>
+      <div><h4>The genres</h4><p>Genre and "musical family" tags were assigned by artist from a single editor's music knowledge, not a live database — broad strokes, lovingly argued, occasionally wrong.</p></div>
+    </div>
+    <div class="sign">Heavy <b>Rotation.</b></div>
+  </div>
+</footer>
+
+<script>
+const PCOL={Aaron:"#B23A2E",Dan:"#2E6B53",Jason:"#BE8224",Zeke:"#6D3A7E",Alex:"#A23E66"};
+
+/* ---------- STANDINGS ---------- */
+const standings=[
+ {rank:1,nm:"Aaron",tag:"The omnivore",z:"+0.35",win:51,verdict:""},
+ {rank:2,nm:"Dan",tag:"The shape-shifter",z:"+0.15",win:21},
+ {rank:3,nm:"Jason",tag:"The metalhead",z:"±0.00",win:15},
+ {rank:4,nm:"Zeke",tag:"The aesthete",z:"−0.04",win:13},
+ {rank:5,nm:"Alex",tag:"The romantic",z:"−0.47",win:3},
+];
+const segs=14;
+document.getElementById('standings').innerHTML=standings.map(s=>{
+ const on=Math.round(s.win/55*segs);
+ const bars=Array.from({length:segs},(_,i)=>`<i class="${i<on?'on':''}"></i>`).join('');
+ return `<div class="row ${s.rank===1?'lead':''}" style="--p:${PCOL[s.nm]}">
+   <div class="rank">${s.rank}</div>
+   <div class="who"><div class="nm">${s.nm}</div><div class="tag">${s.tag}</div>
+     <div class="bars" data-on="${on}">${bars}</div></div>
+   <div class="stat"><div class="v">${s.win}%</div><div class="k">rounds won</div>
+     <div class="v" style="font-size:.62em; margin-top:8px; color:var(--ink-soft)">${s.z}</div><div class="k">avg z</div></div>
+ </div>`;
+}).join('');
+
+/* ---------- PROFILES ---------- */
+const profiles=[
+ {nm:"Aaron",pos:"No. 1 · 51% of rounds",arch:"The omnivore",col:"Aaron",
+  body:"The only selector to submit in all 22 genres, and the most contrarian voter in the room — he wins without ever voting with the crowd. Also the league's relentless critic: he leaves a comment on 97% of his votes, and writes the most when he's scoring you low.",
+  sig:"John Coltrane · Nina Simone · Fela Kuti · King Crimson",
+  stats:[["Voting","Most concentrated"],["Comments","97% of votes"],["Eclecticism","22 / 22 genres"]]},
+ {nm:"Dan",pos:"No. 2 · 21% of rounds",arch:"The shape-shifter",col:"Dan",
+  body:"Parliament one round, Slayer the next — funk and thrash with nothing in between. Quietly improving across the run, and the house Hendrix savant: hand him Jimi and he averages a barely-believable 20.",
+  sig:"Parliament · Slayer · Jimi Hendrix (20.0 avg)",
+  stats:[["Trend","Rising"],["Specialty","Hendrix"],["Soft spot","Alex (+0.23)"]]},
+ {nm:"Jason",pos:"No. 3 · 15% of rounds",arch:"The metalhead",col:"Jason",
+  body:"Anthrax, Slash, Monster Magnet — the heaviest collection in the league. But his masterstroke is the Chili Peppers, where he averages a 14 while everyone else flounders. Holder of the two highest-scoring songs ever submitted.",
+  sig:"Anthrax · Slash · RHCP (14.0 avg)",
+  stats:[["Top song","Right Now · 22"],["Specialty","RHCP"],["Rivalry","Zeke (29–26)"]]},
+ {nm:"Zeke",pos:"No. 4 · 13% of rounds",arch:"The aesthete",col:"Zeke",
+  body:"A devout Miles Davis loyalist and the league's TOOL master (14.3). The most even-handed voter of the five — and, sadly, the clear faller: a top-two opener who slid through the middle seasons and sat out the finale entirely.",
+  sig:"Miles Davis (4×) · TOOL (14.3 avg) · Big Thief",
+  stats:[["Trend","Fading"],["Voting","Most even-handed"],["Specialty","TOOL"]]},
+ {nm:"Alex",pos:"No. 5 · 3% of rounds",arch:"The romantic",col:"Alex",
+  body:"Weird Al and punk, season after season, results be damned. Perennial cellar-dweller — but climbing, and never boring: he's the only player in league history to award a song a perfect 10.",
+  sig:'"Weird Al" · Misfits · Screeching Weasel · Big D',
+  stats:[["Trend","Climbing"],["Claim to fame","Only perfect 10"],["Frost","Aaron (−0.13)"]]},
+];
+document.getElementById('profiles').innerHTML=profiles.map(p=>`
+ <article class="pc" style="--p:${PCOL[p.col]}">
+   <div class="top"><div class="pos">${p.pos}</div><div class="nm">${p.nm}</div><div class="arch">${p.arch}</div></div>
+   <div class="body"><p style="margin:0">${p.body}</p>
+     <dl>${p.stats.map(s=>`<div class="li"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
+       <div class="li" style="display:block; margin-top:8px"><span style="display:block; margin-bottom:4px">Signature</span><span class="sig" style="text-align:left">${p.sig}</span></div>
+     </dl>
+   </div>
+ </article>`).join('');
+
+/* ---------- HEATMAP ---------- */
+const HP=["Aaron","Alex","Dan","Jason","Zeke"];
+const A=[[null,-0.12,-0.06,0.06,0.17],[-0.13,null,-0.09,0.01,-0.02],[0.03,0.23,null,-0.07,-0.06],[0.06,-0.08,0.11,null,-0.08],[0.04,-0.03,0.05,-0.01,null]];
+function mix(a,b,t){a=a.match(/\w\w/g).map(x=>parseInt(x,16));b=b.match(/\w\w/g).map(x=>parseInt(x,16));return '#'+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,'0')).join('');}
+let hg='<div class="hc lab"></div>'+HP.map(p=>`<div class="hc lab">${p}</div>`).join('');
+const mx=0.23;
+A.forEach((row,i)=>{
+ hg+=`<div class="hc lab rl">${HP[i]}</div>`;
+ row.forEach((v,j)=>{
+   if(v===null){hg+=`<div class="hc dz">—</div>`;return;}
+   const t=Math.min(Math.abs(v)/mx,1);
+   const bg=v>=0?mix("E9E6DC","2E6B53",t*.8):mix("E9E6DC","B2543A",t*.8);
+   const tx=t>.45?"#fff":"#1A1613";
+   hg+=`<div class="hc" style="background:${bg};color:${tx};font-weight:500" title="${HP[i]} rates ${HP[j]}">${v>0?'+':''}${v.toFixed(2)}</div>`;
+ });
+});
+document.getElementById('heatgrid').innerHTML=hg;
+
+/* ---------- GENRE TABLE ---------- */
+const genres=[["Jazz",12.1,48],["World / Latin",11.3,16],["Funk",11.2,45],["Progressive",10.2,59],["R&B / Soul",10.1,33],["Blues",10.0,60],["Country",9.9,38],["Folk",9.2,99],["Grunge",9.2,52],["Alternative / Indie",9.2,238],["Metal",9.2,163],["Electronic",9.0,52],["Rock",9.0,444],["Hip-Hop / Rap",8.9,142],["Hard Rock",8.9,152],["Pop",8.6,89],["Punk",8.4,152],["Ska",8.0,20],["Comedy / Novelty",7.7,29]];
+const gmax=12.1;
+document.getElementById('genres').innerHTML=genres.map(g=>`
+ <div class="r">
+   <div class="nm">${g[0]}<span class="sub">n=${g[2]}</span></div>
+   <div class="led"></div>
+   <div class="v">${g[1].toFixed(1)}</div>
+   <div class="bar"><i data-w="${(g[1]/gmax*100).toFixed(1)}" style="background:${g[0]==='Comedy / Novelty'?'var(--alex)':g[1]>=10?'var(--cobalt)':'var(--ink)'}"></i></div>
+ </div>`).join('');
+
+/* ---------- CANON SPECIALISTS ---------- */
+const canon=[["Jimi Hendrix","Dan","20.0","Jason gets 5.0"],["TOOL","Zeke","14.3","the room's high priest"],["Red Hot Chili Peppers","Jason","14.0","double everyone else"],["Beastie Boys","Aaron","12.5","Zeke gets 4.0"],["Led Zeppelin","Aaron","12.0","nobody dislikes Zep"],["Guns N' Roses","— ","7.5","nobody can land it"]];
+document.getElementById('canon').innerHTML=canon.map(c=>`
+ <div class="r">
+   <div class="nm">${c[0]}<span class="sub">${c[3]}</span></div>
+   <div class="led"></div>
+   <div class="v" style="color:${PCOL[c[1].trim()]||'var(--ink-faint)'}">${c[2]} <span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);font-weight:400">${c[1].trim()||'all'}</span></div>
+ </div>`).join('');
+
+/* ---------- SAME SONG DIFFERENT FATE ---------- */
+const fate=[
+ {nm:"Stan — Eminem",note:"3 submissions",pts:[{v:12,who:"Zeke"},{v:9,who:"Jason"},{v:1,who:"Alex"}]},
+ {nm:"Don't Cry (Original) — Guns N' Roses",note:"3 submissions",pts:[{v:16,who:"Dan"},{v:4,who:"Dan"},{v:2,who:"Alex"}]},
+ {nm:"Immigrant Song — Led Zeppelin",note:"bulletproof · 3 submissions",pts:[{v:11,who:"Alex"},{v:11,who:"Zeke"},{v:9,who:"Jason"}]},
+ {nm:"Zombie — The Cranberries",note:"Aaron, twice",pts:[{v:14,who:"Aaron"},{v:4,who:"Aaron"}]},
+];
+document.getElementById('fate').innerHTML=fate.map(f=>`
+ <div class="r">
+   <div class="hd"><div class="nm">${f.nm}</div><div class="vb">${f.note}</div></div>
+   <div class="track"><div class="axis"></div>
+     ${f.pts.map(p=>`<div class="dot" style="left:${(p.v/22*100)}%; background:${PCOL[p.who]}" title="${p.who}: ${p.v}">${p.v}</div>`).join('')}
+   </div>
+   <div class="ends"><span>0</span><span>22 — the league high</span></div>
+ </div>`).join('');
+
+/* ---------- LOYALTY LEDGER ---------- */
+const HPo=["Aaron","Alex","Dan","Jason","Zeke"];
+const LOY=[[0,400,487,498,446],[500,0,478,486,408],[528,465,0,475,404],[540,408,524,0,400],[452,350,442,420,0]];
+(function(){
+ const vals=LOY.flat().filter(v=>v>0), lo=Math.min(...vals), hi=Math.max(...vals);
+ let h='<div class="hc lab"></div>'+HPo.map(p=>`<div class="hc lab">${p}</div>`).join('');
+ LOY.forEach((row,i)=>{h+=`<div class="hc lab rl">${HPo[i]}</div>`;
+   row.forEach((v,j)=>{ if(i===j){h+='<div class="hc dz">—</div>';return;}
+     const t=(v-lo)/(hi-lo), bg=mix("E9E6DC","2440C0",t*.82), tx=t>.5?'#fff':'#1A1613';
+     h+=`<div class="hc" style="background:${bg};color:${tx};font-weight:500" title="${HPo[i]} → ${HPo[j]}: ${v}">${v}</div>`;});
+ });
+ document.getElementById('loyaltygrid').innerHTML=h;
+})();
+const friend=[["Aaron","Jason",1038],["Aaron","Dan",1015],["Dan","Jason",999],["Alex","Dan",943],["Aaron","Alex",900],["Aaron","Zeke",898],["Alex","Jason",894],["Dan","Zeke",846],["Jason","Zeke",820],["Alex","Zeke",758]];
+const fmin=700,fmax=1038;
+document.getElementById('friendship').innerHTML=friend.map(f=>`
+ <div class="r"><div class="pair">${f[0]} + ${f[1]}</div>
+   <div class="track"><i data-w="${((f[2]-fmin)/(fmax-fmin)*100).toFixed(0)}"></i></div>
+   <div class="v">${f[2].toLocaleString()}</div></div>`).join('');
+
+/* ---------- TASTE CORRELATION ---------- */
+const COR=[[1,.20,.20,.20,.25],[.20,1,.29,.30,.23],[.20,.29,1,.39,.38],[.20,.30,.39,1,.42],[.25,.23,.38,.42,1]];
+(function(){
+ let h='<div class="hc lab"></div>'+HPo.map(p=>`<div class="hc lab">${p}</div>`).join('');
+ COR.forEach((row,i)=>{h+=`<div class="hc lab rl">${HPo[i]}</div>`;
+   row.forEach((v,j)=>{ if(i===j){h+='<div class="hc dz">1.0</div>';return;}
+     const t=Math.min((v-.18)/(.42-.18),1), bg=mix("E9E6DC","2440C0",t*.82), tx=t>.5?'#fff':'#1A1613';
+     h+=`<div class="hc" style="background:${bg};color:${tx};font-weight:500">${v.toFixed(2)}</div>`;});
+ });
+ document.getElementById('corrgrid').innerHTML=h;
+})();
+
+/* ---------- PCA TASTE MAP ---------- */
+(function(){
+ const pts=[["Aaron",-36.89,0.33],["Alex",10.85,-11.19],["Dan",8.44,-17.45],["Jason",9.95,27.90],["Zeke",7.65,0.42]];
+ const W=460,H=360,m=46;
+ const xs=pts.map(p=>p[1]),ys=pts.map(p=>p[2]);
+ const xr=[Math.min(...xs),Math.max(...xs)],yr=[Math.min(...ys),Math.max(...ys)];
+ const px=(xr[1]-xr[0])*.16,py=(yr[1]-yr[0])*.16;
+ const sx=v=>m+(v-(xr[0]-px))/((xr[1]+px)-(xr[0]-px))*(W-2*m);
+ const sy=v=>H-m-(v-(yr[0]-py))/((yr[1]+py)-(yr[0]-py))*(H-2*m);
+ let s=`<text x="${W/2}" y="${H-8}" text-anchor="middle" font-family="Spline Sans Mono" font-size="10" fill="#8C8678">PC1 — 34% of variance</text>`;
+ s+=`<text x="15" y="${H/2}" transform="rotate(-90 15 ${H/2})" text-anchor="middle" font-family="Spline Sans Mono" font-size="10" fill="#8C8678">PC2 — 24%</text>`;
+ pts.forEach(p=>{const x=sx(p[1]),y=sy(p[2]),c=PCOL[p[0]];
+   s+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="14" fill="${c}" fill-opacity=".18" stroke="${c}" stroke-width="1.5"/>`;
+   s+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="3.5" fill="${c}"/>`;
+   const isA=p[0]==='Aaron', ta=isA?'start':'middle', dx=isA?16:0, dy=isA?4:-21;
+   s+=`<text x="${(x+dx).toFixed(0)}" y="${(y+dy).toFixed(0)}" text-anchor="${ta}" font-family="Bricolage Grotesque" font-weight="700" font-size="15" fill="${c}">${p[0]}</text>`;
+ });
+ s+=`<text x="${sx(-36.89).toFixed(0)}" y="${(sy(0.33)+20).toFixed(0)}" text-anchor="start" font-family="Spline Sans Mono" font-size="9.5" fill="#8C8678">the island</text>`;
+ document.getElementById('pca').innerHTML=s;
+})();
+
+/* ---------- ARTIST LEADERBOARD ---------- */
+const topA=[["Miles Davis",4,14.0],["TOOL",12,12.2],["Van Halen",5,12.0],["Dream Theater",5,11.8],["Jimi Hendrix",8,11.4],["Alice In Chains",7,10.7],["Led Zeppelin",12,10.6],["Johnny Cash",5,10.6]];
+const tamax=14;
+document.getElementById('topartists').innerHTML=topA.map(a=>`<div class="r"><div class="nm">${a[0]}<span class="sub">n=${a[1]}</span></div><div class="led"></div><div class="v">${a[2].toFixed(1)}</div><div class="bar"><i data-w="${(a[2]/tamax*100).toFixed(0)}" style="background:var(--cobalt)"></i></div></div>`).join('');
+const polA=[["Primus",4,6.9],["Van Halen",5,6.4],["Jimi Hendrix",8,4.7],["Eminem",4,4.7],["Red Hot Chili Peppers",10,4.3],["Smashing Pumpkins",6,4.3],["The Doors",5,4.0],["System Of A Down",5,4.0]];
+document.getElementById('polarartists').innerHTML=polA.map(a=>`<div class="r"><div class="nm">${a[0]}<span class="sub">n=${a[1]}</span></div><div class="led"></div><div class="v" style="color:var(--alex)">±${a[2].toFixed(1)}</div><div class="bar"><i data-w="${(a[2]/6.9*100).toFixed(0)}" style="background:var(--alex)"></i></div></div>`).join('');
+
+/* ---------- POLARIZING SONGS ---------- */
+const polar=[
+ {nm:"Right Now — Van Halen",sub:"Jason",pts:[["Aaron",6],["Alex",10],["Dan",4],["Zeke",2]]},
+ {nm:"Don't Cry (Original) — Guns N' Roses",sub:"Dan",pts:[["Aaron",2],["Alex",9],["Jason",3],["Zeke",2]]},
+ {nm:"Bohemian Rhapsody — Queen",sub:"Zeke",pts:[["Aaron",2],["Alex",8],["Dan",3],["Jason",2]]},
+ {nm:"60 Second Assassins — Layzie Bone",sub:"Dan",pts:[["Aaron",2],["Alex",1],["Jason",6],["Zeke",6]]},
+ {nm:"Spoonman — Soundgarden",sub:"Jason",pts:[["Aaron",3],["Alex",7],["Dan",5],["Zeke",2]]},
+];
+document.getElementById('polar').innerHTML=polar.map(f=>`
+ <div class="r"><div class="hd"><div class="nm">${f.nm}</div><div class="vb">submitted by ${f.sub}</div></div>
+   <div class="track"><div class="axis"></div>
+     ${f.pts.map(p=>`<div class="dot" style="left:${(p[1]/10*100)}%;background:${PCOL[p[0]]}" title="${p[0]}: ${p[1]}">${p[1]}</div>`).join('')}
+   </div>
+   <div class="ends"><span>0</span><span>10 — a perfect ballot</span></div>
+ </div>`).join('');
+
+/* ---------- ROUND TEMPERATURE ---------- */
+const lop=[["Massholes","Jock Jams",0.44],["Grrrl Power","Jock Jams",0.43],["Ivory tickler","Clone War",0.41],["Slash","Jock Jams",0.40],["Sampler platter","Dinnertime",0.36]];
+const tig=[["Title Track","Technicalities",0.10],["Chop Suey (the entree)","Dinnertime",0.12],["I still know things","Technicalities",0.12],["Gone Solo","Behind The Music",0.14],["And Justice for All…","True Crime",0.14]];
+const rrow=(r,hi)=>`<div class="r"><div class="nm">${r[0]}<span class="sub">${r[1]}</span></div><div class="led"></div><div class="v" style="color:${hi?'var(--aaron)':'var(--dan)'}">${r[2].toFixed(2)}</div></div>`;
+document.getElementById('lopsided').innerHTML=lop.map(r=>rrow(r,true)).join('');
+document.getElementById('tightest').innerHTML=tig.map(r=>rrow(r,false)).join('');
+
+/* ---------- CHART.JS: TREND ---------- */
+const seasons=["Clone War","Don't Cry","More Playlists","Jock Jams","Technicalities","Behind Music","True Crime","Back to School","Use Your Allusion","Bring Home","Dinnertime"];
+const tdata={
+ Aaron:[0.28,0.48,0.33,0.46,0.09,0.41,0.20,0.48,0.61,0.45,0.02],
+ Dan:[0.10,-0.10,-0.25,0.10,0.37,0.25,0.53,0.25,0.36,-0.06,0.32],
+ Jason:[0.26,-0.08,0.04,0.00,-0.02,-0.03,-0.02,0.14,-0.48,0.15,-0.05],
+ Zeke:[0.30,0.34,0.29,-0.28,-0.01,-0.47,-0.44,-0.40,0.03,-0.31,null],
+ Alex:[-0.94,-0.64,-0.42,-0.29,-0.43,-0.23,-0.27,-0.54,-0.52,-0.33,-0.30],
+};
+const dashMap={Aaron:[],Dan:[7,4],Jason:[2,3],Zeke:[9,3,2,3],Alex:[11,4]};
+let trendChart;
+function buildTrend(){
+ const ctx=document.getElementById('trend');
+ trendChart=new Chart(ctx,{type:'line',
+  data:{labels:seasons,datasets:Object.keys(tdata).map(k=>({label:k,data:tdata[k],borderColor:PCOL[k],backgroundColor:PCOL[k],borderWidth:k==='Aaron'?3:2,borderDash:dashMap[k],pointRadius:2.5,pointHoverRadius:5,tension:.25,spanGaps:true}))},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'nearest',intersect:false},
+   plugins:{legend:{display:false},tooltip:{backgroundColor:"#1A1613",titleFont:{family:"Spline Sans Mono",size:11},bodyFont:{family:"Spline Sans Mono",size:12},padding:10,displayColors:true,
+     callbacks:{label:c=>`  ${c.dataset.label}: ${c.parsed.y>0?'+':''}${c.parsed.y.toFixed(2)}`}}},
+   scales:{
+     y:{grid:{color:c=>c.tick.value===0?'rgba(26,22,19,.45)':'rgba(26,22,19,.08)'},ticks:{font:{family:"Spline Sans Mono",size:11},color:"#8C8678",callback:v=>v>0?'+'+v:v},title:{display:false}},
+     x:{grid:{display:false},ticks:{font:{family:"Spline Sans Mono",size:9.5},color:"#8C8678",maxRotation:55,minRotation:55,autoSkip:false}}
+   }}});
+ const lg=document.getElementById('trend-legend');
+ lg.innerHTML=Object.keys(tdata).map((k,i)=>`<button data-i="${i}"><span class="sw" style="background:${PCOL[k]}"></span>${k}</button>`).join('');
+ lg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+   const i=+b.dataset.i, vis=trendChart.isDatasetVisible(i);
+   trendChart.setDatasetVisibility(i,!vis); b.classList.toggle('off',vis); trendChart.update();
+ }));
+}
+
+/* ---------- CHART.JS: FAMILIES ---------- */
+const fams=[
+ ["Seattle grunge",31,9.5,"Nirvana · Pearl Jam · Soundgarden · Alice In Chains · +8","Seattle grunge",-10,-4,"right"],
+ ["GnR / Slash",23,6.4,"Guns N' Roses · Slash · Snakepit · Velvet Revolver","GnR / Slash",11,4,"left"],
+ ["Wu-Tang universe",16,7.4,"Wu-Tang · GZA · RZA · Method Man · Raekwon · +4","Wu-Tang",11,4,"left"],
+ ["TOOL / A Perfect Circle",14,12.0,"TOOL · A Perfect Circle","TOOL / APC",11,4,"left"],
+ ["Sabbath / Ozzy / Dio",12,5.7,"Black Sabbath · Ozzy Osbourne · Dio","Sabbath / Ozzy",11,13,"left"],
+ ["Rage / Morello",11,8.6,"Rage Against The Machine · Audioslave · Tom Morello","Rage / Morello",11,-9,"left"],
+ ["Grohl-verse",10,7.9,"Nirvana · Foo Fighters · QOTSA · Them Crooked Vultures","Grohl-verse",11,15,"left"],
+ ["Beatles-verse",9,8.8,"The Beatles · John Lennon","Beatles-verse",-10,13,"right"],
+ ["Cornell-fronted",8,10.6,"Soundgarden · Audioslave · Temple of the Dog · solo","Cornell-fronted",11,-9,"left"],
+ ["Van Halen / Hagar",7,10.3,"Van Halen · Sammy Hagar · Chickenfoot","Van Halen / Hagar",11,13,"left"],
+ ["Floyd / Waters",6,8.0,"Pink Floyd · Roger Waters","Floyd / Waters",11,13,"left"],
+ ["Primus / Claypool",5,9.0,"Primus · Claypool Lennon Delirium","Primus",-10,-9,"right"],
+ ["Zappa / Mothers",3,10.3,"Frank Zappa · Mothers of Invention","Zappa / Mothers",11,4,"left"],
+];
+const famLabels={id:'famLabels',afterDatasetsDraw(c){
+ const ctx=c.ctx; ctx.save();
+ ctx.font='10.5px "Spline Sans Mono", monospace';
+ c.data.datasets.forEach((ds,di)=>{
+   const meta=c.getDatasetMeta(di); if(meta.hidden)return;
+   ds.data.forEach((pt,pi)=>{
+     const el=meta.data[pi]; if(!el)return;
+     ctx.fillStyle=pt.above?'#234e8c':'#8a3a2a';
+     ctx.textAlign=pt.align||'left'; ctx.textBaseline='middle';
+     ctx.fillText(pt.short, el.x+(pt.dx||8), el.y+(pt.dy||0));
+   });
+ });
+ ctx.restore();
+}};
+function buildFam(){
+ const mk=f=>({x:f[1],y:f[2],r:5+f[1]/33*16,nm:f[0],members:f[3],short:f[4],dx:f[5],dy:f[6],align:f[7],above:f[2]>=9.1});
+ const pts=fams.map(mk);
+ new Chart(document.getElementById('fam'),{type:'bubble',
+  data:{datasets:[
+    {label:'above average',data:pts.filter(p=>p.above),backgroundColor:'rgba(36,64,192,.30)',borderColor:'#2440C0',borderWidth:1.5},
+    {label:'below average',data:pts.filter(p=>!p.above),backgroundColor:'rgba(178,84,58,.30)',borderColor:'#B2543A',borderWidth:1.5}
+  ]},
+  plugins:[famLabels],
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:6,right:14,bottom:6,left:6}},
+   plugins:{legend:{display:false},tooltip:{backgroundColor:"#1A1613",titleFont:{family:"Bricolage Grotesque",size:13,weight:'700'},bodyFont:{family:"Spline Sans Mono",size:11},padding:11,
+     callbacks:{title:c=>c[0].raw.nm,label:c=>[`${c.raw.x} submissions · avg ${c.raw.y}`,c.raw.members]}}},
+   scales:{
+     y:{min:5,max:12.7,grid:{color:c=>Math.abs(c.tick.value-9.1)<0.05?'rgba(26,22,19,.45)':'rgba(26,22,19,.08)'},ticks:{font:{family:"Spline Sans Mono",size:11},color:"#8C8678"},title:{display:true,text:'avg votes per song',font:{family:"Spline Sans Mono",size:11},color:"#8C8678"}},
+     x:{min:0,max:34,grid:{display:false},ticks:{font:{family:"Spline Sans Mono",size:11},color:"#8C8678"},title:{display:true,text:'total submissions',font:{family:"Spline Sans Mono",size:11},color:"#8C8678"}}
+   }}});
+}
+
+/* ---------- reveal + animate ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);
+   e.target.querySelectorAll?.('[data-w]').forEach(i=>i.style.width=i.dataset.w+'%');
+}})},{threshold:.12});
+document.querySelectorAll('section,.rv,.dl .r').forEach(el=>{el.classList.add('rv');io.observe(el);});
+
+/* side-divider meters */
+document.querySelectorAll('.side .meter').forEach(m=>{
+ m.innerHTML=Array.from({length:40},(_,i)=>`<span style="height:${20+Math.abs(Math.sin(i*.6))*100*.22+ (i%3)*4}%"></span>`).join('');
+});
+
+window.addEventListener('DOMContentLoaded',()=>{buildTrend();buildFam();});
+</script>
+</body>
+</html>
