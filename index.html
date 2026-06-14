@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 :root{
   --paper:#E9E6DC; --paper-2:#E2DED2; --panel:#F1EEE6;
@@ -52,6 +53,12 @@ a{color:var(--cobalt); text-decoration:none; border-bottom:1px solid rgba(36,64,
 .press > div{flex:1 1 130px; padding:18px clamp(14px,1.8vw,26px); border-right:1px solid var(--line-soft)}
 .press > div:first-child{padding-left:0}
 .press > div:last-child{border-right:0; padding-right:0}
+@media(max-width:560px){
+  .press{display:grid; grid-template-columns:1fr 1fr; gap:20px 0}
+  .press > div{flex:none; padding:0; border-right:0}
+  .press > div:nth-child(even){padding-left:clamp(18px,6vw,32px); border-left:1px solid var(--line-soft)}
+  .press > div:last-child{padding-right:0}
+}
 .press .n{font-family:var(--display); font-weight:700; font-size:clamp(26px,4vw,40px); line-height:1; letter-spacing:-.02em}
 .press .l{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px}
 
@@ -144,6 +151,13 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
 .dl .v{font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:-.01em}
 .dl .bar{grid-column:1/-1; height:8px; background:var(--line); margin-top:-2px}
 .dl .bar i{display:block; height:100%; background:var(--ink); width:0; transition:width .9s cubic-bezier(.2,.7,.2,1)}
+@media(max-width:600px){
+  .dl .r{grid-template-columns:1fr auto; gap:4px 12px}
+  .dl .led{display:none}
+  .dl .nm{white-space:normal; line-height:1.25}
+  .dl .nm .sub{display:block; margin-left:0; margin-top:3px}
+  .dl .v{align-self:start; text-align:right; white-space:nowrap}
+}
 
 /* ---------- three column lists ---------- */
 .tri{display:grid; grid-template-columns:1fr; gap:clamp(22px,4vw,40px); margin-top:8px}
@@ -208,6 +222,37 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
 .pca{width:100%; height:auto; display:block; margin-top:18px}
 @media(prefers-reduced-motion:reduce){.fr .track i{transition:none}}
 
+/* ---------- superlatives ---------- */
+.sup{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; margin-top:8px; background:var(--line); border:1px solid var(--line)}
+@media(min-width:680px){.sup{grid-template-columns:repeat(4,1fr)}}
+.sup .award{background:var(--paper); padding:20px 18px; display:flex; flex-direction:column; gap:7px; min-height:128px}
+.sup .award .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); line-height:1.3}
+.sup .award .v{font-family:var(--display); font-weight:800; font-size:clamp(26px,3.6vw,38px); letter-spacing:-.03em; line-height:.95; color:var(--p,var(--ink)); margin-top:auto}
+.sup .award .w{font-size:14.5px; color:var(--ink-soft); line-height:1.3}
+.sup .award .w b{font-weight:600; color:var(--ink)}
+
+/* ---------- trend cards ---------- */
+.trends{display:grid; grid-template-columns:1fr; gap:1px; margin-top:clamp(24px,4vw,40px); background:var(--line); border:1px solid var(--line)}
+@media(min-width:760px){.trends{grid-template-columns:repeat(3,1fr)}}
+.trends .tc{background:var(--paper); padding:24px}
+.trends .tc .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--cobalt); margin-bottom:16px}
+.trends .tc .big{font-family:var(--display); font-weight:800; font-size:clamp(28px,4vw,40px); letter-spacing:-.03em; line-height:1; display:flex; align-items:baseline; gap:8px}
+.trends .tc .big .arrow{font-size:.6em}
+.trends .tc svg{display:block; width:100%; height:46px; margin:16px 0 12px; overflow:visible}
+.trends .tc .cap{font-size:14.5px; color:var(--ink-soft); line-height:1.4}
+
+/* ---------- stream graph ---------- */
+.stream-wrap{margin-top:18px}
+#stream{width:100%; height:auto; display:block; font-family:var(--mono)}
+#stream path.band{cursor:pointer; transition:opacity .2s ease}
+#stream .axlab{font-size:9.5px; fill:var(--ink-faint)}
+.streamlegend{display:flex; flex-wrap:wrap; gap:7px 15px; margin-top:18px; font-family:var(--mono); font-size:12px}
+.streamlegend button{font:inherit; cursor:pointer; background:none; border:0; padding:3px 0; color:var(--ink); display:flex; align-items:center; gap:7px; opacity:1; transition:opacity .2s}
+.streamlegend button.dim{opacity:.32}
+.streamlegend .sw{width:12px; height:12px; border-radius:2px; flex:none}
+.streamcap{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); margin-top:14px; min-height:1.4em}
+.streamcap b{color:var(--ink); font-weight:500}
+
 ::selection{background:var(--cobalt); color:#fff}
 </style>
 </head>
@@ -216,7 +261,7 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
 <!-- ================= HERO ================= -->
 <header class="hero">
   <div class="wrap">
-    <span class="kick">The Music League Annual · Mar 2025 – Apr 2026</span>
+    <span class="kick">The Music League Annual · <span style="white-space:nowrap">Mar 2025 – Apr 2026</span></span>
     <h1><span class="ln">Heavy</span><span class="ln b">Rotation</span></h1>
     <p class="dek">A statistical teardown of 1,001 songs, eleven seasons, and five friends who agree on almost nothing — <em>except that Led Zeppelin is never a bad idea.</em></p>
     <div class="eq" aria-hidden="true">
@@ -280,6 +325,13 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
     <div class="eyebrow">The five · field notes</div>
     <p class="lede">Same five names every season. Five completely different record shops.</p>
     <div class="cards" id="profiles"></div>
+  </section>
+
+  <!-- SUPERLATIVES -->
+  <section>
+    <div class="eyebrow">Superlatives · the record books</div>
+    <p class="lede">Awards nobody asked for.</p>
+    <div class="sup" id="superlatives"></div>
   </section>
 
   <!-- WHO RATES WHOM -->
@@ -471,6 +523,20 @@ section{padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--line)}
     <p class="note" style="margin-top:18px; max-width:64ch">Scored by spread relative to each round's budget, so a high-points season can't fake drama. The blowouts cluster in the low-stakes "Jock Jams" season — when little is on the line, one song runs away with it. The photo-finishes happen when everyone quietly agrees.</p>
   </section>
 
+  <!-- THE LONG ARC -->
+  <section>
+    <div class="eyebrow">The long arc · thirteen months of drift</div>
+    <p class="lede">The league started on virtuoso chops. It drifted somewhere else entirely.</p>
+    <p class="note" style="max-width:64ch">Genre mix across the eleven seasons, oldest at left. The river's center of gravity slides from jazz, funk and hard rock toward hip-hop, indie and pop. One caveat: the jazz/funk bulge at the far left is partly Clone War, the opening season built around instrumental showmanship — but the rise of hip-hop and alternative is a steady climb, not a single-season blip.</p>
+    <div class="stream-wrap frame">
+      <div class="cap"><span>Genre mix over time</span><span>share of genre tags · by season</span></div>
+      <svg id="stream" viewBox="0 0 900 380" role="img" aria-label="Stream graph of genre share across eleven seasons. Jazz, funk and hard rock shrink while hip-hop, indie and pop grow.">A center-aligned stream graph showing jazz and funk shrinking over time while hip-hop, alternative and pop expand.</svg>
+      <div class="streamcap" id="streamcap">Hover a band to trace a genre's arc.</div>
+      <div class="streamlegend" id="streamlegend"></div>
+    </div>
+    <div class="trends" id="trends"></div>
+  </section>
+
   <!-- TRIVIA -->
   <section>
     <div class="eyebrow">The locked groove · liner notes</div>
@@ -528,23 +594,23 @@ const profiles=[
  {nm:"Aaron",pos:"No. 1 · 51% of rounds",arch:"The omnivore",col:"Aaron",
   body:"The only selector to submit in all 22 genres, and the most contrarian voter in the room — he wins without ever voting with the crowd. Also the league's relentless critic: he leaves a comment on 97% of his votes, and writes the most when he's scoring you low.",
   sig:"John Coltrane · Nina Simone · Fela Kuti · King Crimson",
-  stats:[["Voting","Most concentrated"],["Comments","97% of votes"],["Eclecticism","22 / 22 genres"]]},
+  stats:[["Voting","Most concentrated"],["Comments","97% of votes"],["Eclecticism","22 / 22 genres"],["Pet artist","Hendrix · 4×"],["Deep cuts","49% lone picks"],["Submits","Late"]]},
  {nm:"Dan",pos:"No. 2 · 21% of rounds",arch:"The shape-shifter",col:"Dan",
   body:"Parliament one round, Slayer the next — funk and thrash with nothing in between. Quietly improving across the run, and the house Hendrix savant: hand him Jimi and he averages a barely-believable 20.",
   sig:"Parliament · Slayer · Jimi Hendrix (20.0 avg)",
-  stats:[["Trend","Rising"],["Specialty","Hendrix"],["Soft spot","Alex (+0.23)"]]},
+  stats:[["Trend","Rising"],["Specialty","Hendrix"],["Soft spot","Alex (+0.23)"],["Pet artist","TOOL · 5×"],["Deep cuts","55% lone picks"],["Submits","Late"]]},
  {nm:"Jason",pos:"No. 3 · 15% of rounds",arch:"The metalhead",col:"Jason",
   body:"Anthrax, Slash, Monster Magnet — the heaviest collection in the league. But his masterstroke is the Chili Peppers, where he averages a 14 while everyone else flounders. Holder of the two highest-scoring songs ever submitted.",
   sig:"Anthrax · Slash · RHCP (14.0 avg)",
-  stats:[["Top song","Right Now · 22"],["Specialty","RHCP"],["Rivalry","Zeke (29–26)"]]},
+  stats:[["Top song","Right Now · 22"],["Specialty","RHCP"],["Rivalry","Zeke (29–26)"],["Pet artist","Led Zeppelin · 4×"],["Deep cuts","52% lone picks"],["Submits","Early bird"]]},
  {nm:"Zeke",pos:"No. 4 · 13% of rounds",arch:"The aesthete",col:"Zeke",
   body:"A devout Miles Davis loyalist and the league's TOOL master (14.3). The most even-handed voter of the five — and, sadly, the clear faller: a top-two opener who slid through the middle seasons and sat out the finale entirely.",
   sig:"Miles Davis (4×) · TOOL (14.3 avg) · Big Thief",
-  stats:[["Trend","Fading"],["Voting","Most even-handed"],["Specialty","TOOL"]]},
+  stats:[["Trend","Fading"],["Voting","Most even-handed"],["Specialty","TOOL"],["Pet artist","Metallica · 6×"],["Deep cuts","46% lone picks"],["Submits","Always last"]]},
  {nm:"Alex",pos:"No. 5 · 3% of rounds",arch:"The romantic",col:"Alex",
   body:"Weird Al and punk, season after season, results be damned. Perennial cellar-dweller — but climbing, and never boring: he's the only player in league history to award a song a perfect 10.",
   sig:'"Weird Al" · Misfits · Screeching Weasel · Big D',
-  stats:[["Trend","Climbing"],["Claim to fame","Only perfect 10"],["Frost","Aaron (−0.13)"]]},
+  stats:[["Trend","Climbing"],["Claim to fame","Only perfect 10"],["Frost","Aaron (−0.13)"],["Pet artist","\"Weird Al\" · 5×"],["Deep cuts","61% lone picks"],["Submits","Early bird"]]},
 ];
 document.getElementById('profiles').innerHTML=profiles.map(p=>`
  <article class="pc" style="--p:${PCOL[p.col]}">
@@ -693,6 +759,82 @@ const rrow=(r,hi)=>`<div class="r"><div class="nm">${r[0]}<span class="sub">${r[
 document.getElementById('lopsided').innerHTML=lop.map(r=>rrow(r,true)).join('');
 document.getElementById('tightest').innerHTML=tig.map(r=>rrow(r,false)).join('');
 
+/* ---------- SUPERLATIVES ---------- */
+const sup=[
+ {k:"Longest win streak",v:"8",w:"<b>Aaron</b> · consecutive rounds",col:"Aaron"},
+ {k:"Longest drought",v:"40",w:"<b>Alex</b> · rounds without a win",col:"Alex"},
+ {k:"Hendrix savant",v:"20.0",w:"<b>Dan</b> · avg on Jimi Hendrix",col:"Dan"},
+ {k:"Best single drop",v:"22",w:"<b>Jason</b> · &ldquo;Right Now&rdquo;",col:"Jason"},
+ {k:"The deadline gremlin",v:"Last",w:"<b>Zeke</b> · always submits last",col:"Zeke"},
+ {k:"Biggest crate-digger",v:"61%",w:"<b>Alex</b> · picks nobody else makes",col:"Alex"},
+ {k:"Highest podium rate",v:"86%",w:"<b>Aaron</b> · top-three finishes",col:"Aaron"},
+ {k:"Loudest critic",v:"97%",w:"<b>Aaron</b> · of votes get a comment",col:"Aaron"},
+];
+document.getElementById('superlatives').innerHTML=sup.map(a=>`
+ <div class="award" style="--p:${PCOL[a.col]}"><div class="k">${a.k}</div><div class="v">${a.v}</div><div class="w">${a.w}</div></div>`).join('');
+
+/* ---------- TREND SPARKLINE CARDS ---------- */
+function spark(vals,color,fill){
+ const W=120,H=40,p=4, lo=Math.min(...vals),hi=Math.max(...vals),rg=(hi-lo)||1;
+ const xs=vals.map((_,i)=>p+i/(vals.length-1)*(W-2*p));
+ const ys=vals.map(v=>H-p-(v-lo)/rg*(H-2*p));
+ const pts=xs.map((x,i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+ const areaPts=`${p},${H-p} ${pts} ${W-p},${H-p}`;
+ return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+   <polygon points="${areaPts}" fill="${color}" fill-opacity="${fill?.12:0}"/>
+   <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+   <circle cx="${xs[xs.length-1].toFixed(1)}" cy="${ys[ys.length-1].toFixed(1)}" r="2.4" fill="${color}"/></svg>`;
+}
+const trends=[
+ {k:"Returning artists",big:'0 → 50%',arrow:'↑',ac:'var(--ink)',spark:spark([0,23,29,27,40,28,47,42,61,52,47],'#2440C0',true),cap:"share of each season's picks reusing an artist from a prior season — the well slowly runs dry."},
+ {k:"Shared taste",big:'.30 → .24',arrow:'↓',ac:'var(--aaron)',spark:spark([0.30,0.24],'#B23A2E',false),cap:"average agreement between any two voters, first half vs second. They're drifting apart, not together."},
+ {k:"Votes with a comment",big:'20 → 61%',arrow:'↑',ac:'var(--dan)',spark:spark([20,32,54,43,50,47,43,41,44,37,61],'#2E6B53',true),cap:"the room got chattier over time — every selector except Alex, who went quiet."},
+];
+document.getElementById('trends').innerHTML=trends.map(t=>`
+ <div class="tc"><div class="k">${t.k}</div>
+   <div class="big">${t.big} <span class="arrow" style="color:${t.ac}">${t.arrow}</span></div>
+   ${t.spark}<div class="cap">${t.cap}</div></div>`).join('');
+
+/* ---------- D3 STREAM GRAPH ---------- */
+function buildStream(){
+ if(typeof d3==='undefined')return;
+ const svg=d3.select('#stream'), W=900,H=380, m={t:28,r:24,b:56,l:24};
+ const seasons=["Clone War","Don't Cry","More Playlists","Jock Jams","Technicalities","Behind Music","True Crime","Back to School","Use Your Allusion","Bring Home","Dinnertime"];
+ const colOrder=['Jazz','Funk','Hard Rock','Metal','Rock','Alternative/Indie','Punk','Pop','Folk','Hip-Hop/Rap'];
+ const SH=[
+  [13.6,9.2,14.1,11.4,23.4,12.5,7.6,2.2,3.3,2.7],[2.2,1.1,7.5,9.7,29.0,15.1,5.4,7.5,9.1,13.4],
+  [4.6,4.6,8.0,5.7,31.4,15.4,12.6,8.6,5.1,4.0],[2.1,0.7,22.6,13.7,29.5,9.6,11.6,2.1,1.4,6.8],
+  [0.9,1.9,8.4,14.0,29.0,18.7,10.3,2.8,5.6,8.4],[0.0,2.1,12.8,10.6,39.4,16.0,6.4,4.3,2.1,6.4],
+  [0.0,1.4,7.1,10.0,26.4,12.9,11.4,5.0,11.4,14.3],[0.6,3.1,6.2,11.1,28.4,18.5,8.6,8.0,4.9,10.5],
+  [2.9,1.5,7.4,8.8,22.8,16.9,7.4,8.1,6.6,17.6],[0.0,1.6,4.7,10.9,29.5,14.0,14.0,5.4,15.5,4.7],
+  [1.8,1.8,7.1,9.7,25.7,19.5,12.4,7.1,3.5,11.5]];
+ const keys=['Jazz','Funk','Hard Rock','Metal','Rock','Punk','Folk','Pop','Alternative/Indie','Hip-Hop/Rap'];
+ const col={Jazz:'#3B4C82',Funk:'#6D3A7E','Hard Rock':'#B23A2E',Metal:'#3A3631',Rock:'#A9572C','Alternative/Indie':'#2E6B53',Punk:'#A23E66',Pop:'#BE8224',Folk:'#6E6B2E','Hip-Hop/Rap':'#2440C0'};
+ const data=SH.map((row,i)=>{const o={season:i}; colOrder.forEach((k,j)=>o[k]=row[j]); return o;});
+ const layers=d3.stack().keys(keys).offset(d3.stackOffsetWiggle).order(d3.stackOrderNone)(data);
+ const x=d3.scaleLinear().domain([0,10]).range([m.l+30,W-m.r]);
+ const yMin=d3.min(layers,l=>d3.min(l,d=>d[0])), yMax=d3.max(layers,l=>d3.max(l,d=>d[1]));
+ const y=d3.scaleLinear().domain([yMin,yMax]).range([H-m.b,m.t]);
+ const area=d3.area().x(d=>x(d.data.season)).y0(d=>y(d[0])).y1(d=>y(d[1])).curve(d3.curveBasis);
+ const cap=document.getElementById('streamcap');
+ const reset=()=>{svg.selectAll('path.band').attr('fill-opacity',.92); cap.innerHTML='Hover a band to trace a genre&rsquo;s arc.';};
+ const focus=(k)=>{svg.selectAll('path.band').attr('fill-opacity',d=>d.key===k?1:.16);
+   cap.innerHTML=`<b>${k}</b> — ${data[0][k].toFixed(0)}% of season 1 &rarr; ${data[10][k].toFixed(0)}% of season 11`;};
+ svg.selectAll('path.band').data(layers).join('path').attr('class','band').attr('d',area)
+   .attr('fill',d=>col[d.key]).attr('fill-opacity',0)
+   .on('mouseover',(e,d)=>focus(d.key)).on('mouseout',reset);
+ svg.selectAll('path.band').transition().duration(750).attr('fill-opacity',.92);
+ const g=svg.append('g');
+ seasons.forEach((s,i)=>g.append('text').attr('class','axlab')
+   .attr('transform',`translate(${x(i)},${H-m.b+14}) rotate(-38)`).attr('text-anchor','end').text(s));
+ const lg=document.getElementById('streamlegend');
+ lg.innerHTML=keys.map(k=>`<button data-k="${k}"><span class="sw" style="background:${col[k]}"></span>${k}</button>`).join('');
+ lg.querySelectorAll('button').forEach(b=>{
+   b.addEventListener('mouseenter',()=>focus(b.dataset.k));
+   b.addEventListener('mouseleave',reset);
+ });
+}
+
 /* ---------- CHART.JS: TREND ---------- */
 const seasons=["Clone War","Don't Cry","More Playlists","Jock Jams","Technicalities","Behind Music","True Crime","Back to School","Use Your Allusion","Bring Home","Dinnertime"];
 const tdata={
@@ -782,7 +924,19 @@ document.querySelectorAll('.side .meter').forEach(m=>{
  m.innerHTML=Array.from({length:40},(_,i)=>`<span style="height:${20+Math.abs(Math.sin(i*.6))*100*.22+ (i%3)*4}%"></span>`).join('');
 });
 
-window.addEventListener('DOMContentLoaded',()=>{buildTrend();buildFam();});
+/* ---------- lazy chart init (build when scrolled into view) ---------- */
+function lazyInit(sel, fn){
+ const el=document.querySelector(sel); if(!el)return;
+ const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+ const o=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){fn(); o.disconnect();}})},
+   {threshold:0.12, rootMargin: reduce?'0px':'0px 0px -6% 0px'});
+ o.observe(el);
+}
+window.addEventListener('DOMContentLoaded',()=>{
+ lazyInit('#trend', buildTrend);
+ lazyInit('#fam', buildFam);
+ lazyInit('#stream', buildStream);
+});
 </script>
 </body>
 </html>
